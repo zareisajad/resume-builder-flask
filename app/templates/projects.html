@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-capitalize">
+  <form method="post">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="mb-1" for="bookid">Project title:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="bookid"
+          placeholder="job title"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="mb-1" for="cardid">URL:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cardid"
+          placeholder="company name"
+          required
+        />
+      </div>
+      <div class="col-md-12 mt-2">
+        <label class="mb-1" for="bookid">Technologys :</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cardid"
+          placeholder="from"
+          required
+        />
+      </div>
+      <div class="col-md-12">
+        <label class="mb-1 mt-2" for="cardid">Description:</label>
+        <textarea
+          class="form-control"
+          name=""
+          id=""
+          cols="30"
+          rows="5"
+          placeholder="Write a little about project..."
+        ></textarea>
+      </div>
+    </div>
+    <button class="w-100 btn btn-outline-primary mt-3" type="submit">
+      Add
+    </button>
+  </form>
+</div>
+
+{% endblock %}

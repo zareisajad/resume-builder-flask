@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block content %}
+<div class="text-capitalize">
+  <form method="post">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="mb-1" for="bookid">Job title:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="bookid"
+          placeholder="job title"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="mb-1" for="cardid">Company Name:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cardid"
+          placeholder="company name"
+          required
+        />
+      </div>
+      <div class="col-md-6 mt-2">
+        <label class="mb-1" for="bookid">Date employment :</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cardid"
+          placeholder="from"
+          required
+        />
+      </div>
+      <div class="col-md-6 mt-2">
+        <label class="mb-1" for="bookid">quit job at:</label>
+        <input
+          class="form-control"
+          type="text"
+          name="cardid"
+          placeholder="to"
+          id="quitJob"
+        />
+      </div>
+      <div class="col-md-4 mt-3" id="working">
+        <label class="mb-1" for="checkbox">i'm still working there:</label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value="working"
+          id="checkbox"
+          onclick="myFunc();"
+        />
+      </div>
+      <div class="col-md-12">
+        <label class="mb-1 mt-2" for="cardid">Description:</label>
+        <textarea
+          class="form-control"
+          name=""
+          id=""
+          cols="30"
+          rows="5"
+          placeholder="Write a little about job..."
+        ></textarea>
+      </div>
+    </div>
+    <button class="w-100 btn btn-outline-primary mt-3" type="submit">
+      Submit
+    </button>
+  </form>
+</div>
+<script>
+  function myFunc() {
+    if (document.querySelector("#checkbox").checked) {
+      document.querySelector("#quitJob").disabled = true;
+    } else {
+      document.querySelector("#quitJob").disabled = false;
+    }
+  }
+</script>
+{% endblock %}

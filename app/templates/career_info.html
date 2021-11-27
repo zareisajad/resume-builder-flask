@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-capitalize">
+    <form method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="mb-1"  for="bookid">job status:</label>
+            <select class="form-control"  name="marital-status" required>
+                <option value="" disabled selected hidden>Select</option>
+                <option value="active">In active search</option>
+                <option value="interested">Interested in a new job</option>
+                <option value="not-looking">I'm not looking for a job</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1"  for="cardid">The type of job desired:</label>
+            <select class="form-control"  name="marital-status" required>
+                <option value="" disabled selected hidden>Select</option>
+                <option value="full">Full-time</option>
+                <option value="part">Part-time</option>
+                <option value="project">Projects</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1 mt-2" for="cardid">Expected salary:</label>
+            <input class="form-control" type="text" name="cardid" placeholder="10.000" required>
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1 mt-2" for="cardid">Military service:</label>
+            <select class="form-control"  name="marital-status" required>
+                <option value="" disabled selected hidden>Select</option>
+                <option value="completed">Completed</option>
+                <option value="subject">Subject </option>
+            </select>
+        </div>
+
+        <div class="col-md-12">
+            <label class="mb-1 mt-2" for="cardid">Favorite technologies for work (search English):</label>
+            <input class="form-control" type="text" name="cardid" placeholder="" required>
+        </div>
+    </div>
+    <button class="w-100 btn btn-outline-primary mt-3" type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
