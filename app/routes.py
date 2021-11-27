@@ -1,6 +1,11 @@
 from flask import render_template, redirect, url_for, request
-#from flask_login import current_user, login_required, login_user, logout_user
-from app import app
+from flask_login import current_user, login_required, login_user, logout_user
+from app import app, login
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 @app.route('/profile', methods=['POST', 'GET'])
@@ -31,3 +36,9 @@ def projects():
 @app.route('/profile/links', methods=['POST', 'GET'])
 def links():
     return render_template('links.html', title='Links')
+
+
+@app.route('/profile/resume', methods=['POST', 'GET'])
+def resume():
+    #resume = Resume.query.all()
+    return render_template('resume.html')

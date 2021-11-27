@@ -10,9 +10,9 @@
     <title> {% if title %} {{title}} {% else %} Resume Builder {% endif %} </title>
 </head>
 <body>
-    <main role="main" class="container">
+    <main class="container">
         <div class="row mt-5 mb-5 text-capitalize">
-            <div class="sub-container col-md-3 ms-5 p-1">
+            <div class="col-md-3 ms-5 p-1">
                 <div class="text-primary text-capitalize">
                   <a href="{{ url_for('profile') }}">
                     <li class="list-group-item rounded text-primary">
@@ -44,13 +44,21 @@
                       Links
                     </li>
                   </a>
+                  <div class="text-center">
+                    <a class="btn btn-outline-primary  ms-1 ps-2" href="">Download
+                        <i style="vertical-align: middle;" class="material-icons">&#xe2c4;</i>
+                    </a>
+                    <a class="btn btn-primary m-1 ps-2" href="{{ url_for('resume') }}">Resume
+                        <i style="vertical-align: middle;" class="material-icons">&#xe417;</i>
+                    </a>
+                  </div>
                     <p class="mt-5 ms-3 text-primary fixed-bottom">
                         &copy;2021- <a href="https://sajadzarei.ir">sajadzarei</a>
                     </p>
                 </div>
             </div>
             <!-- right side -->
-            <div class="sub-container col-md-7 ms-5">
+            <div class="col-md-7 ms-5">
                 <h3 class="text-primary"><i class="material-icons h2 text-primary" style="vertical-align: middle;">&#xe24d;</i> {% if title %} {{title}} {% else %}Flask Resume Builder{% endif %} </h3> 
             <hr class="text-muted">
             <!-- flash messages -->
