@@ -1,6 +1,10 @@
-from flask import render_template, redirect, url_for, request
+import os
+from posix import EX_TEMPFAIL
+
+from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 from app import app, login, db
 from app.models import User, Resume
@@ -19,13 +23,15 @@ def sign_up():
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        if password1 != password2:
+        user = User.query.filter_by(email=email).first()
+        if user and password1 != password2:
+            #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_up'))
         user = User(email=email)
         user.set_password(password1)
         db.session.add(user)
         db.session.commit()
-        print(user)
+        #flash('Your are now ready to sign in! have fun.')
         return redirect(url_for('sign_in'))
     return render_template('sign_up.html', title='home')
 
@@ -38,11 +44,19 @@ def sign_in():
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
-        if not user and not user.check_password(password):
+        if user and not user.check_password(password):
+            #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_in'))
         login_user(user)
+        #flash("You logged in to your account.", category="success")
         return redirect(url_for('profile'))
     return render_template('sign_in.html', title='home')
+
+
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @login.user_loader
@@ -53,6 +67,29 @@ def load_user(id):
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
+    if request.method == 'POST':
+        img = request.files['img']
+        filename = secure_filename(img.filename)
+        if filename != '':
+            img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
+        img_url = os.path.join("/images", filename)
+        print(img_url)
+        user = User.query.filter_by(id=current_user.id).first()
+        if user:
+            user.image=img_url
+            user.fname=request.form.get('fname')
+            user.lname=request.form.get('lname')
+            user.phone=request.form.get('phone')
+            user.title=request.form.get('title')
+            user.age=request.form.get('age')
+            user.identifi_number=request.form.get('identifi')
+            user.marital_status=request.form.get('marital')
+            user.about=request.form.get('about')
+        if request.form.get('gender') == 'other':
+            user.gender = request.form.get('gender-text')
+        else:
+            user.gender = request.form.get('gender')
+        db.session.commit()
     return render_template('resume-forms/profile.html', title='Profile')
 
 

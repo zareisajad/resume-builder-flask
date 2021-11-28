@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
     age = db.Column(db.String(150))
     title = db.Column(db.String(150))
     city = db.Column(db.String(80))
-    identification_number = db.Column(db.String(80))
+    identifi_number = db.Column(db.String(80))
     marital_status = db.Column(db.String(80))
     gender = db.Column(db.String(80))
     about = db.Column(db.String(700))
