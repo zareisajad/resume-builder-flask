@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:200,100,400");
-
+* {
+    font-family:'Raleway', sans-serif;
+}
 a, a:hover, a:active {
     text-decoration: none;
     color: #0D6EFD;
@@ -7,21 +9,30 @@ a, a:hover, a:active {
 li:hover {
     background-color: #F1F1F1;
     cursor: pointer;
-    
 }
 li {
     margin: 3px;
     font-size: 1.1rem;
 }
-hr{
-    margin-top: -5px;
-}
-
-* {
-    font-family:'Raleway', sans-serif;
-}
-
 img {
     width: 100px;
     height: 100px;
+}
+.home-body {
+    background:linear-gradient(rgba(0, 0, 0, 0.623), rgba(0, 0, 0, 0.466)), url('https://www.boldly-xr.com/wp-content/uploads/2018/12/web-developer-1080x675.jpg') no-repeat center / cover;
+    height: 100vh;
+    overflow: hidden;
+}
+.hero {
+    font-size: 60px;
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+}
+
+.btn {
+    font-size: 20px;
+}
+.form {
+    margin: 40px;
 }
