@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug.security import check_password_hash
 
-from app import app, login
+from app import app, login, db
 from app.models import User, Resume
 
 
@@ -12,11 +13,35 @@ def home():
 
 @app.route('/sign-up', methods=['POST', 'GET'])
 def sign_up():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        if password1 != password2:
+            return redirect(url_for('sign_up'))
+        user = User(email=email)
+        user.set_password(password1)
+        db.session.add(user)
+        db.session.commit()
+        print(user)
+        return redirect(url_for('sign_in'))
     return render_template('sign_up.html', title='home')
 
 
 @app.route('/sign-in', methods=['POST', 'GET'])
 def sign_in():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if not user and not user.check_password(password):
+            return redirect(url_for('sign_in'))
+        login_user(user)
+        return redirect(url_for('profile'))
     return render_template('sign_in.html', title='home')
 
 
