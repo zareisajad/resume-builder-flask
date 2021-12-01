@@ -10,21 +10,10 @@ class ProfileForm(FlaskForm):
         render_kw={'accept': 'image/*'},
         validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'])]
     )
-    fname = StringField(
-        render_kw={'placeholder': 'first name'}, validators=[DataRequired()]
-    )
-    lname = StringField(
-        render_kw={'placeholder': 'last name'}, validators=[DataRequired()]
-    )
     phone = StringField(
         render_kw={'placeholder': 'phone'}, validators=[DataRequired()]
     )
     age = DateField()
-    email = StringField(
-        render_kw={'placeholder': 'email'},
-        validators=[DataRequired(),
-        Email(check_deliverability=True,message='Invalid Email!')]
-    )
     title = StringField(
         render_kw={'placeholder': 'Example(Full stack flask developer, etc...)'},
         validators=[DataRequired()]
@@ -47,7 +36,6 @@ class ProfileForm(FlaskForm):
     )
     gender_text = StringField(
         render_kw={'placeholder': 'your gender'},
-        validators=[DataRequired()]
     )
     about = TextAreaField(
         render_kw={

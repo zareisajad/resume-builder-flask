@@ -22,10 +22,10 @@
       {% if messages %} {% for message in messages %}
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
       {% endfor %} {% endif %}
-      <div class="row mt-5 text-capitalize">
+      <div class="row mt- text-capitalize">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-          <form method="post" class="mt-5 pt-5">
+          <form method="post" class="mt-3 pt-5">
             <div class="form-group">
               <h3>Create your account first</h3>
               <div class="mt-3">
@@ -38,6 +38,26 @@
                   required
                 />
               </div>
+            </div>
+            <div class="mt-3">
+              <label class="mb-1" for="fname">first name:</label>
+              <input
+                class="form-control"
+                type="text"
+                name="fname"
+                placeholder="first name"
+                required
+              />
+            </div>
+            <div class="mt-3">
+              <label class="mb-1" for="lname">last name:</label>
+              <input
+                class="form-control"
+                type="text"
+                name="lname"
+                placeholder="last name"
+                required
+              />
             </div>
             <div class="form-group">
               <div class="mt-2">
@@ -66,11 +86,13 @@
             <button class="w-100 btn btn-primary mt-3" type="submit">
               Sign In
             </button>
+            <p class="text-muted mt-3">
+              Already have an account?
+              <a href="{{url_for('sign_in')}}">click here</a>
+            </p>
+          </div>
+          </div>
           </form>
-          <p class="text-muted mt-3">
-            Already have an account?
-            <a href="{{url_for('sign_in')}}">click here</a>
-          </p>
         </div>
         <div class="col-md-4"></div>
       </div>

@@ -1,14 +1,13 @@
 import os
-from posix import EX_TEMPFAIL
+import datetime
 
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required, login_user, logout_user
-from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
 from app import app, login, db
 from app.forms import ProfileForm
-from app.models import User, Resume
+from app.models import User, Profile
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -21,6 +20,8 @@ def sign_up():
     if current_user.is_authenticated:
         return redirect(url_for('profile'))
     if request.method == 'POST':
+        fname = request.form.get('fname')
+        lname = request.form.get('lname')
         email = request.form.get('email')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
@@ -28,7 +29,7 @@ def sign_up():
         if user and password1 != password2:
             #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_up'))
-        user = User(email=email)
+        user = User(fname=fname, lname=lname, email=email)
         user.set_password(password1)
         db.session.add(user)
         db.session.commit()
@@ -45,7 +46,7 @@ def sign_in():
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
-        if user and not user.check_password(password):
+        if not user or not user.check_password(password):
             #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_in'))
         login_user(user)
@@ -68,12 +69,54 @@ def load_user(id):
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
-    # img = request.files['img']
-    # filename = secure_filename(img.filename)
-    # if filename != '':
-    #     img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
-    # img_url = os.path.join("/images", filename)
     form = ProfileForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            img = form.photo.data
+            filename = secure_filename(img.filename)
+            if filename != '':
+                img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
+            img_url = os.path.join("/images", filename)
+            if not current_user.profile:
+                profile = Profile(
+                    photo=img_url,
+                    title=form.title.data,
+                    phone=form.phone.data,
+                    about=form.about.data,
+                    age=form.age.data,
+                    city=form.city.data,
+                    identifi_number=form.identifi_number.data,
+                    marital_status=form.marital_status.data,
+                    gender=form.gender.data,
+                    user_id=current_user.id
+                )
+                if form.gender.data == 'other':
+                    profile.gender = form.gender_text.data
+                db.session.add(profile)
+                db.session.commit()
+                return redirect(url_for('profile'))
+            else:
+                p = Profile.query.filter_by(user_id=current_user.id).first()
+                p.title=form.title.data,
+                p.phone=form.phone.data,
+                p.about=form.about.data,
+                p.age=form.age.data,
+                p.city=form.city.data,
+                p.identifi_number=form.identifi_number.data,
+                p.marital_status=form.marital_status.data,
+                p.gender=form.gender.data,
+                db.session.commit()
+                return redirect(url_for('profile'))
+    else:
+        if current_user.profile:
+            form.photo.data = current_user.profile[0].photo
+            form.title.data = current_user.profile[0].title
+            form.phone.data = current_user.profile[0].phone
+            form.about.data = current_user.profile[0].about
+            form.age.data = current_user.profile[0].age
+            form.city.data = current_user.profile[0].city
+            form.identifi_number.data = current_user.profile[0].identifi_number
+            form.gender.data = current_user.profile[0].gender
     return render_template('resume-forms/profile.html', title='Profile', form=form)
 
 

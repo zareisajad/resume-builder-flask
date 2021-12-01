@@ -4,32 +4,29 @@ from flask_login import UserMixin
 from app import db
 
 
-class Resume(db.Model):
+class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    job_status = db.Column(db.String(120))
-    desired_type_job = db.Column(db.String(120))
-    expected_salary = db.Column(db.String(100))
-    military_service = db.Column(db.String(80))
-    fav_technologies = db.Column(db.String(200))
-    user = db.relationship('User', backref='user')
-
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(150))
-    first_name = db.Column(db.String(200))
-    last_name = db.Column(db.String(200))
+    photo = db.Column(db.String(150))
     phone = db.Column(db.String(80))
-    email = db.Column(db.String(150), index=True, unique=True)
+    about = db.Column(db.String(700))
     age = db.Column(db.String(150))
     title = db.Column(db.String(150))
     city = db.Column(db.String(80))
     identifi_number = db.Column(db.String(80))
     marital_status = db.Column(db.String(80))
     gender = db.Column(db.String(80))
-    about = db.Column(db.String(700))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    fname = db.Column(db.String(200))
+    lname = db.Column(db.String(200))
+    email = db.Column(db.String(150), index=True, unique=True)
     password = db.Column(db.String(150))
-    resume_id = db.Column(db.Integer, db.ForeignKey('resume.id'))
+
+    #resume = db.relationship('Resume', backref='resume')
+    profile = db.relationship('Profile', backref='profile')
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
