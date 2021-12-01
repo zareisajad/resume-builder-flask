@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
 from app import app, login, db
+from app.forms import ProfileForm
 from app.models import User, Resume
 
 
@@ -67,30 +68,13 @@ def load_user(id):
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile():
-    if request.method == 'POST':
-        img = request.files['img']
-        filename = secure_filename(img.filename)
-        if filename != '':
-            img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
-        img_url = os.path.join("/images", filename)
-        print(img_url)
-        user = User.query.filter_by(id=current_user.id).first()
-        if user:
-            user.image=img_url
-            user.fname=request.form.get('fname')
-            user.lname=request.form.get('lname')
-            user.phone=request.form.get('phone')
-            user.title=request.form.get('title')
-            user.age=request.form.get('age')
-            user.identifi_number=request.form.get('identifi')
-            user.marital_status=request.form.get('marital')
-            user.about=request.form.get('about')
-        if request.form.get('gender') == 'other':
-            user.gender = request.form.get('gender-text')
-        else:
-            user.gender = request.form.get('gender')
-        db.session.commit()
-    return render_template('resume-forms/profile.html', title='Profile')
+    # img = request.files['img']
+    # filename = secure_filename(img.filename)
+    # if filename != '':
+    #     img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
+    # img_url = os.path.join("/images", filename)
+    form = ProfileForm()
+    return render_template('resume-forms/profile.html', title='Profile', form=form)
 
 
 @app.route('/profile/employment', methods=['POST', 'GET'])

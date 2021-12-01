@@ -4,72 +4,62 @@
 
 <div class="text-capitalize">
     <form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}   
     <div class="row">
         <div class="col-md-10 mt-3">
-            <label class="mb-1" for="img">Upload Your Picture:</label>
-            <input class="form-control" type="file" name="img" accept="image/*">
+            <label class="mb-1" for="photo">Upload Your Picture:</label>
+            {{ form.photo(class_='form-control')}}
         </div>
         <div class="col-md-2">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAQlBMVEX////1AEv1AEr0ADT//P71AD71AEH+7/X0ADz/9/r1AEX+8vX1AED1AEf0ADbzABL/+v7+7PT0ACr0AC/0ACT+4Ot7xb48AAADA0lEQVR4nO3cy3KjMBBAUZBtwDb4lcn//2pWU+VuDy0aCRCZe7dyQ05VFiYiqioiIiIiIiLydz/svXtEeKj33gHh1j9gcggRlh9ChOWHEGH5IZTCcJLV5upG9SFBeHoc36tuAjjI1a16dinCo7EaLpFrrVSLUIYQ4QYhVCFEuEEIVQgRblCaUK3efp2wvoltHQH8EB5fni0i+dtx/nKMvnIKrT6ETYgP/Z0NSnhxzDYIEU6+E0JrFqE1ixDh9DshtGYRWrMIXcIgcwnN2YjQnM0pDMPlvUHcKiK0Z22hPZtTeHrIVfP5UArD5SwN/XRhaORqK6+cVeh5xo8IT2I1IpRXvv5CoVxFiBAhQoQIESJEiBAhQoQIESJEiBAhQoQICxOKXMJejJYq7MR20sUllLNdmcLqLFOLptCeLUZoFhGaIVQhRIhwJIRWCFUIESIcaR/CSgnVG2NmD/OdKLskYX+VX+rVmQrqK78UDu15eu0ghY7R81MeZuF8N7GRJ1DUcrW3zqdQs3b6xc0+PjI2632Ddvw1T+eqXcZZTm9BWH4IEZYfQoTlh/C/Ezq+HqZVJ9w3RRjWItZh/n3rlGeL01qn6l3VE7DnvlnP3Fss+/+e7LL+FWOxivk7zWIhtEKoQrhQCK0QqhAuFEKrfQg323vSwutSPdXeU2t+ekHhH8eWkC/1fGh9tFOG5XZIt2q990u3CiFC8WmEm4QQofg0wk1CiFB8OiL0bb4kzMrWE4bGk37rbXb9bS1hGI7V5A0ifeZe/Zg++3mxtYSuU+ft/z9MCaEKIcLREM4PoQohwtEQzg+hCuH7Tzl4dogiQtdO1VpC+xmv71xnm3R9gc+Hked07+ktJT7jm6WcTxO5MkKECBEiRIgQIcKI0PHtcZ/fS1+OLSLns4XnygsKE9rJE3BCCOeHUIVwdgjnh1CFcHYI54dQhXB2hQr7Z5urZ/N+4VDnu/J30pl7Xbb0fzZlvLK4MKe3INxBCBGWH0KE5YcQYfkhvB/23j0iJCIiIiIion/1A0WtuD8IHEnRAAAAAElFTkSuQmCC" alt="">
         </div>
-
         <div class="col-md-6">
             <label class="mb-1" for="fname">First Name:</label>
-            <input class="form-control" type="text" name="fname" placeholder="name" required>
+            {{ form.fname(class_='form-control')}}
         </div>
         <div class="col-md-6">
             <label class="mb-1" for="lname">Last Name:</label>
-            <input class="form-control" type="text" name="lname" placeholder="lastname" required>
+            {{ form.lname(class_='form-control')}}
         </div>
         <div class="col-md-12">
             <label class="mb-1 mt-2" for="phone">Phone:</label>
-            <input class="form-control" type="tel" name="phone" placeholder="phone" required>
+            {{ form.phone(class_='form-control')}}
         </div>
         <div class="col-md-12">
             <label class="mb-1 mt-2" for="email">Email:</label>
-            <input class="form-control" type="email" name="email" placeholder="phone" required>
+            {{ form.email(class_='form-control')}}
         </div>
         <div class="col-md-12">
             <label class="mb-1 mt-2" for="age">Date of birth:</label>
-            <input class="form-control" type="date" name="age" placeholder="phone" required>
+            {{ form.age(class_='form-control')}}
         </div>
         <div class="col-md-12">
             <label class="mb-1 mt-2" for="title">Title:</label>
-            <input class="form-control" type="text" name="title" placeholder="Example: Software Developer, front-end dev..." required>
+            {{ form.title(class_='form-control')}}
         </div>
         <div class="col-md-6">
             <label class="mb-1 mt-2" for="city">City:</label>
-            <input class="form-control" type="text" name="city" placeholder="city" required>
+            {{ form.city(class_='form-control')}}
         </div>
         <div class="col-md-6">
             <label class="mb-1 mt-2" for="identifi">Identification number:</label>
-            <input class="form-control" type="text" name="identifi" placeholder="your identification number" required>
+            {{ form.identifi_number(class_='form-control')}}
         </div>
         <div class="col-md-6">
             <label class="mb-1 mt-2" for="marital">Marital status:</label>
-            <select class="form-control"  name="marital" required>
-                <option value="" disabled selected hidden>Select your status</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-            </select>
+            {{ form.marital_status(class_='form-control')}}
         </div>
         <div class="col-md-6" id="genderDiv">
             <label class="mb-1 mt-2"  for="gender">gender:</label>
-            <select class="form-control"  name="gender" id="gender" required>
-                <option value="" disabled selected hidden>Select your gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="not-to-say">i'd rather not to say</option> 
-                <option value="other">other</option> 
-            </select>
+            {{ form.gender(class_='form-control')}}
         </div>
         <div class="col-md-4" id="otherGender" style="display: none;">
             <label class="mb-1 mt-2"  for="gender-text">type here:</label>
-            <input class="form-control" type="text" name="gender-text" placeholder="enter gender here">
+            {{ form.gender_text(class_='form-control')}}
         </div>
         <div class="col-md-12">
             <label class="mb-1 mt-2" for="about">about me:</label>
-            <textarea class="form-control" name="about" id="" cols="30" rows="5" placeholder="Write a little about yourself..."></textarea>
+            {{ form.about(class_='form-control')}}
         </div>
     </div>
     <button class="w-100 btn btn-outline-primary mt-3" type="submit">Submit</button>
