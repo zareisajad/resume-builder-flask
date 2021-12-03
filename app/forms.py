@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms.fields.simple import TextAreaField
 from wtforms.validators import DataRequired, Length, Email, ValidationError
-from wtforms import StringField, DateField, SelectField
+from wtforms import StringField, SelectField, IntegerField
 
 
 class ProfileForm(FlaskForm):
@@ -13,7 +13,9 @@ class ProfileForm(FlaskForm):
     phone = StringField(
         render_kw={'placeholder': 'phone'}, validators=[DataRequired()]
     )
-    age = DateField()
+    birthday_year = IntegerField(
+        render_kw={'placeholder': 'your birthday year'}, validators=[DataRequired()]
+    )
     title = StringField(
         render_kw={'placeholder': 'Example(Full stack flask developer, etc...)'},
         validators=[DataRequired()]

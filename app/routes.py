@@ -1,5 +1,5 @@
 import os
-import datetime
+from datetime import datetime
 
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required, login_user, logout_user
@@ -77,46 +77,48 @@ def profile():
             if filename != '':
                 img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
             img_url = os.path.join("/images", filename)
+            # calculate age
+            birthday_year = form.birthday_year.data
+            today = datetime.now()
+            date = today.date()
+            current_year = date.strftime("%Y")
+            age = int(current_year) - birthday_year
+            if form.gender.data == 'other':
+                gender = form.gender_text.data
+            else:
+                gender = form.gender.data
             if not current_user.profile:
                 profile = Profile(
-                    photo=img_url,
-                    title=form.title.data,
-                    phone=form.phone.data,
-                    about=form.about.data,
-                    age=form.age.data,
-                    city=form.city.data,
+                    photo=img_url, title=form.title.data,
+                    phone=form.phone.data, about=form.about.data,
+                    age=age, city=form.city.data, 
                     identifi_number=form.identifi_number.data,
                     marital_status=form.marital_status.data,
-                    gender=form.gender.data,
-                    user_id=current_user.id
+                    gender=form.gender.data, user_id=current_user.id
                 )
-                if form.gender.data == 'other':
-                    profile.gender = form.gender_text.data
                 db.session.add(profile)
                 db.session.commit()
-                return redirect(url_for('profile'))
             else:
-                p = Profile.query.filter_by(user_id=current_user.id).first()
+                Profile.query.filter_by(user_id=current_user.id).first()
                 p.title=form.title.data,
                 p.phone=form.phone.data,
                 p.about=form.about.data,
-                p.age=form.age.data,
+                p.age=age,
                 p.city=form.city.data,
                 p.identifi_number=form.identifi_number.data,
                 p.marital_status=form.marital_status.data,
-                p.gender=form.gender.data,
+                p.gender=gender,
                 db.session.commit()
-                return redirect(url_for('profile'))
+            return redirect(url_for('profile'))
     else:
-        if current_user.profile:
-            form.photo.data = current_user.profile[0].photo
-            form.title.data = current_user.profile[0].title
-            form.phone.data = current_user.profile[0].phone
-            form.about.data = current_user.profile[0].about
-            form.age.data = current_user.profile[0].age
-            form.city.data = current_user.profile[0].city
-            form.identifi_number.data = current_user.profile[0].identifi_number
-            form.gender.data = current_user.profile[0].gender
+        form.photo.data = current_user.profile.photo
+        form.title.data = current_user.profile.title
+        form.phone.data = current_user.profile.phone
+        form.about.data = current_user.profile.about
+        form.birthday_year.data = current_user.profile.age
+        form.city.data = current_user.profile.city
+        form.identifi_number.data = current_user.profile.identifi_number
+        form.gender.data = current_user.profile.gender
     return render_template('resume-forms/profile.html', title='Profile', form=form)
 
 

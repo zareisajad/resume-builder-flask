@@ -9,13 +9,12 @@ class Profile(db.Model):
     photo = db.Column(db.String(150))
     phone = db.Column(db.String(80))
     about = db.Column(db.String(700))
-    age = db.Column(db.String(150))
+    age = db.Column(db.Integer)
     title = db.Column(db.String(150))
     city = db.Column(db.String(80))
     identifi_number = db.Column(db.String(80))
     marital_status = db.Column(db.String(80))
     gender = db.Column(db.String(80))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 class User(db.Model, UserMixin):
@@ -24,9 +23,9 @@ class User(db.Model, UserMixin):
     lname = db.Column(db.String(200))
     email = db.Column(db.String(150), index=True, unique=True)
     password = db.Column(db.String(150))
-
-    #resume = db.relationship('Resume', backref='resume')
-    profile = db.relationship('Profile', backref='profile')
+    # testing: https://stackoverflow.com/questions/23861661/flask-sqlalchemy-error-binding-parameter-0
+    profile_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    profile = db.relationship('Profile', backref='profile', uselist=False)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
