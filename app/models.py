@@ -6,7 +6,6 @@ from app import db
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    photo = db.Column(db.String(150))
     phone = db.Column(db.String(80))
     about = db.Column(db.String(700))
     age = db.Column(db.Integer)
@@ -20,6 +19,7 @@ class Profile(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    photo = db.Column(db.String(150), nullable=False ,default='default.png')
     fname = db.Column(db.String(200))
     lname = db.Column(db.String(200))
     email = db.Column(db.String(150), index=True, unique=True)

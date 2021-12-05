@@ -8,7 +8,7 @@ from wtforms import StringField, SelectField, IntegerField
 class ProfileForm(FlaskForm):
     photo = FileField(
         render_kw={'accept': 'image/*'},
-        validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'])]
+        validators=[FileAllowed(['jpg', 'png', 'jpeg'])]
     )
     phone = StringField(
         render_kw={'placeholder': 'phone'}, validators=[DataRequired()]

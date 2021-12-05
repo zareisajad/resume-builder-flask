@@ -47,10 +47,8 @@ def sign_in():
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
         if not user or not user.check_password(password):
-            #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_in'))
         login_user(user)
-        #flash("You logged in to your account.", category="success")
         return redirect(url_for('profile'))
     return render_template('sign_in.html', title='home')
 
@@ -71,45 +69,37 @@ def load_user(id):
 def profile():
     form = ProfileForm()
     if form.validate_on_submit():
-        img = form.photo.data
-        filename = secure_filename(img.filename)
-        if filename != '':
-            img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
-        img_url = os.path.join("/images", filename)
-        # calculating age
-        birthday_year = form.birthday_year.data
-        today = datetime.now()
-        date = today.date()
-        current_year = date.strftime("%Y")
-        age = int(current_year) - birthday_year
+        age = calculate_age(form.birthday_year.data)
+        img = upload_img(form.photo.data)
         if not current_user.profile:
+            # create profile for user
             profile = Profile(
-                photo=img_url, title=form.title.data,
-                phone=form.phone.data, about=form.about.data,
-                age=age, city=form.city.data, 
+                title=form.title.data, phone=form.phone.data, age=age,
+                about=form.about.data, city=form.city.data,
                 identifi_number=form.identifi_number.data,
                 marital_status=form.marital_status.data,
-                gender=form.gender.data, user_id=current_user.id
+                user_id=current_user.id, gender=form.gender.data,
             )
+            current_user.photo = img
             db.session.add(profile)
             db.session.commit()
             return redirect(url_for('profile'))
         else:
+            # updating profile information
             p = Profile.query.filter_by(user_id=current_user.id).first()
-            p.photo=img_url,
-            p.title=form.title.data,
-            p.phone=form.phone.data,
-            p.about=form.about.data,
-            p.age=age,
-            p.city=form.city.data,
-            p.identifi_number=form.identifi_number.data,
-            p.marital_status=form.marital_status.data,
-            p.gender=form.gender.data,
+            p.title=form.title.data
+            p.phone=form.phone.data
+            p.about=form.about.data
+            p.age=age
+            p.city=form.city.data
+            p.identifi_number=form.identifi_number.data
+            p.marital_status=form.marital_status.data
+            p.gender=form.gender.data
+            current_user.photo = img  
             db.session.commit()
             return redirect(url_for('profile'))
     else:
         if current_user.profile:        
-            form.photo.data = current_user.profile.photo
             form.title.data = current_user.profile.title
             form.phone.data = current_user.profile.phone
             form.about.data = current_user.profile.about
@@ -118,6 +108,37 @@ def profile():
             form.identifi_number.data = current_user.profile.identifi_number
             form.gender.data = current_user.profile.gender
     return render_template('resume-forms/profile.html', title='Profile', form=form)
+
+
+def calculate_age(year):
+    """
+    get profileform birthday_year field submited data
+    and calculate current age,
+    then return age
+    """
+    birthday_year = year
+    today = datetime.now()
+    date = today.date()
+    current_year = date.strftime("%Y")
+    age = int(current_year) - birthday_year
+    return age
+
+
+def upload_img(img_file):
+    """
+    get img file, secure its name and save it in static/images,
+    then return its url to save in db.
+    """
+    img = img_file
+    filename = img.filename
+    if filename != '':
+        img_name = filename.split('.')
+        img_name[0] = current_user.fname + str(current_user.id) + '.'
+        name = ''.join(img_name)
+        filename = secure_filename(name)
+        img.save(os.path.join(app.config["UPLOAD_PATH"], filename))
+    img_url = os.path.join("/images", filename)
+    return img_url
 
 
 @app.route('/profile/employment', methods=['POST', 'GET'])
