@@ -6,7 +6,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 
 from app import app, login, db
-from app.forms import ProfileForm
+from app.forms import ProfileForm, JobInfoForm, CreerBackForm
 from app.models import User, Profile
 
 
@@ -27,13 +27,11 @@ def sign_up():
         password2 = request.form.get('password2')
         user = User.query.filter_by(email=email).first()
         if user and password1 != password2:
-            #flash("Somthing's wrong. please try again.")
             return redirect(url_for('sign_up'))
         user = User(fname=fname, lname=lname, email=email)
         user.set_password(password1)
         db.session.add(user)
         db.session.commit()
-        #flash('Your are now ready to sign in! have fun.')
         return redirect(url_for('sign_in'))
     return render_template('sign_up.html', title='home')
 
@@ -143,14 +141,16 @@ def upload_img(img_file):
 
 @app.route('/profile/employment', methods=['POST', 'GET'])
 @login_required
-def career_info():
-    return render_template('resume-forms/career_info.html', title='Career Information')
+def job_info():
+    form = JobInfoForm()
+    return render_template('resume-forms/job_info.html', title='Job Information', form=form)
 
 
 @app.route('/profile/background', methods=['POST', 'GET'])
 @login_required
 def career_background():
-    return render_template('resume-forms/career_background.html', title='Career Background')
+    form = CreerBackForm()
+    return render_template('resume-forms/career_background.html', title='Career Background', form=form)
 
 
 @app.route('/profile/skills', methods=['POST', 'GET'])

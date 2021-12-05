@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-capitalize">
+    <form method="post">
+        {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-6">
+            <label class="mb-1"  for="bookid">job status:</label>
+            {{ form.job_status(class_='form-control') }}
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1"  for="cardid">The type of job desired:</label>
+            {{ form.job_type(class_='form-control') }}
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1 mt-2" for="cardid">Expected salary:</label>
+            {{ form.expected_salary(class_='form-control') }}
+        </div>
+        <div class="col-md-6">
+            <label class="mb-1 mt-2" for="cardid">Military service:</label>
+            {{ form.military_service(class_='form-control') }}
+        </div>
+
+        <div class="col-md-12">
+            <label class="mb-1 mt-2" for="cardid">Favorite technologies for work (separate with comma):</label>
+            {{ form.work_tech(class_='form-control') }}
+        </div>
+    </div>
+    <button class="w-100 btn btn-outline-primary mt-3" type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

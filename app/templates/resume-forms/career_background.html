@@ -1,67 +1,38 @@
 {% extends 'base.html' %} {% block content %}
 <div class="text-capitalize">
-  <form method="post">
+  <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addJob();">Add New Job</button>
+  <form method="post" id="form" style="display:none;">
+    {{ form.hidden_tag() }}
     <div class="row">
       <div class="col-md-6">
         <label class="mb-1" for="bookid">Job title:</label>
-        <input
-          class="form-control"
-          type="text"
-          name="bookid"
-          placeholder="job title"
-          required
-        />
+        {{ form.job_title(class_='form-control') }}
       </div>
       <div class="col-md-6">
         <label class="mb-1" for="cardid">Company Name:</label>
-        <input
-          class="form-control"
-          type="text"
-          name="cardid"
-          placeholder="company name"
-          required
-        />
+        {{ form.company_name(class_='form-control') }}
       </div>
       <div class="col-md-6 mt-2">
         <label class="mb-1" for="bookid">Date employment :</label>
-        <input
-          class="form-control"
-          type="text"
-          name="cardid"
-          placeholder="from"
-          required
-        />
+        {{ form.employment_date(class_='form-control') }}
       </div>
       <div class="col-md-6 mt-2">
         <label class="mb-1" for="bookid">quit job at:</label>
-        <input
-          class="form-control"
-          type="text"
-          name="cardid"
-          placeholder="to"
-          id="quitJob"
-        />
+        {{ form.quit_date(class_='form-control') }}
       </div>
       <div class="col-md-4 mt-3" id="working">
         <label class="mb-1" for="checkbox">i'm still working there:</label>
         <input
-          class="form-check-input"
-          type="checkbox"
-          value="working"
-          id="checkbox"
-          onclick="myFunc();"
-        />
+        class="form-check-input"
+        type="checkbox"
+        value="working"
+        id="checkbox"
+        onclick="myFunc();"
+      />
       </div>
       <div class="col-md-12">
         <label class="mb-1 mt-2" for="cardid">Description:</label>
-        <textarea
-          class="form-control"
-          name=""
-          id=""
-          cols="30"
-          rows="5"
-          placeholder="Write a little about job..."
-        ></textarea>
+        {{ form.about_job(class_='form-control') }}
       </div>
     </div>
     <button class="w-100 btn btn-outline-primary mt-3" type="submit">
@@ -77,5 +48,9 @@
       document.querySelector("#quitJob").disabled = false;
     }
   }
+  function addJob(){
+    document.querySelector('#form').style.display = 'block';
+    document.querySelector('#showFormBtn').style.display = 'none';
+ }
 </script>
 {% endblock %}
