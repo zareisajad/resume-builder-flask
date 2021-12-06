@@ -1,10 +1,10 @@
 import os
 from datetime import datetime
 
-
 from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
+from flask_weasyprint import HTML, render_pdf
 
 from app import app, login, db
 from app.forms import ProfileForm, JobInfoForm, BackgroundForm, SkillForm, ProjectsForm, LinksForm
@@ -269,4 +269,6 @@ def links():
 @app.route('/profile/resume', methods=['POST', 'GET'])
 @login_required
 def resume():
-    return render_template('resume.html')
+    html = render_template('resume.html')
+    return render_pdf(HTML(string=html))
+    # return render_template('resume.html')

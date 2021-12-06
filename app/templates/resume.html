@@ -9,12 +9,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='resume.css') }}">
     <title>{{ current_user.fname }}{{ current_user.lname }}|Resume</title>
 </head>
+<style>
+
+</style>
 <body>
     <main class="container">
         <div class="row mt-5 mb-5 text-capitalize">
             <div class="col-md-3">
-                <div class="p-5 text-capitalize bg-primary text-center rounded">
-                    <img class="resume-photo rounded" src="{{ url_for('static', filename=current_user.photo)}}">
+                <div class="p-5 text-capitalize bg-primary rounded">
+                    <img class="resume-photo rounded text-center" src="{{ url_for('static', filename=current_user.photo)}}">
+                    <hr>
+                    <div class="text-light">
+                        <h5>Personal Info:</h5>
+                        <b>Age:</b> {{current_user.profile.age}} <br>
+                        <b>Located City:</b> {{current_user.profile.city}}
+                        <b>Marital status:</b> {{current_user.profile.marital_status}}<br>
+                        <b>gender:</b> {{current_user.profile.gender}}<br>
+                    </div> 
                 </div>
             </div>
             <!-- right side -->
@@ -22,6 +33,10 @@
                 <h1 class="text-black">{{ current_user.fname }} {{ current_user.lname }}</h1> 
                 <h4 class="text-primary">{{ current_user.profile.title }}</h4> 
             <hr class="text-muted">
+            <div class="about bg-light p-3">
+                <h4 class="text-muted">About Me:</h4>
+                {{ current_user.profile.about }}
+            </div>
           </div>
         </div>
     </main>

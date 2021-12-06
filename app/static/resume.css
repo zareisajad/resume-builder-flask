@@ -1,4 +1,13 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:200,100,400");
+* {
+    font-family:'Raleway', sans-serif;
+}
 .resume-photo {
     width: 200px;
     height: 200px;
+}
+
+@page { size: A4; margin: 1cm }
+@media print {
+    
 }
