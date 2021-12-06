@@ -19,11 +19,17 @@
                       Personal Info
                     </li>
                   </a>
+                  {% if current_user.profile %}
                   <a href="{{ url_for('job_info') }}">
                     <li class="list-group-item rounded text-primary">
                       Job information
                     </li>
-                  </a>                  
+                  </a>     
+                  {% else %}
+                    <li class="list-group-item rounded text-primary">
+                      Job information
+                    </li>
+                  {% endif %}
                   <a href="{{ url_for('career_background') }}">
                     <li class="list-group-item rounded text-primary">
                       Career background
@@ -48,7 +54,7 @@
                     <a class="btn btn-outline-primary  ms-1 ps-2" href="">Download
                         <i style="vertical-align: middle;" class="material-icons">&#xe2c4;</i>
                     </a>
-                    <a class="btn btn-primary m-1 ps-2" href="{{ url_for('resume') }}">Resume
+                    <a class="btn btn-primary m-1 ps-2" href="{{ url_for('resume') }}" target='_blank'>Resume
                         <i style="vertical-align: middle;" class="material-icons">&#xe417;</i>
                     </a>
                   </div>

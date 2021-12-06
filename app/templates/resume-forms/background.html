@@ -35,10 +35,16 @@
         {{ form.about_job(class_='form-control') }}
       </div>
     </div>
-    <button class="w-100 btn btn-outline-primary mt-3" type="submit">
+    <button class="w-100 btn btn-outline-primary mt-3 mb-4" type="submit">
       Submit
     </button>
   </form>
+  {% for job in jobs %}
+  <div class="jobs p-3 m-1 rounded" style="background-color:#ccc;">
+    {{ job.job_title }} ({{ job.employment_date }}-{{ job.quit_date }}) - at: {{ job.company_name }}
+    <a class="text-danger" style="float:right; font-size: 20px;" href="{{ url_for('delete_job', id=job.id) }}">X</a>
+  </div>
+  {% endfor %}
 </div>
 <script>
   function myFunc() {

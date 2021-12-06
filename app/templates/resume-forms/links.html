@@ -5,34 +5,26 @@
 <div class="text-capitalize">
     <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addSkill();">Add New Skill</button>
     <form method="post" style="display: none;" id="form">
+      {{ form.hidden_tag() }}   
       <div class="row">
         <div class="col-md-6">
           <label class="mb-1" for="bookid">URL:</label>
-          <input
-            class="form-control"
-            type="text"
-            name="bookid"
-            placeholder="website url.."
-            required
-          />
+          {{ form.url(class_='form-control')}}
         </div>
         <div class="col-md-6">
           <label class="mb-1" for="cardid">Link type :</label>
-          <select class="form-control"  name="marital-status" required>
-            <option value="" disabled selected hidden>Select</option>
-            <option value="instagram">instagram</option>
-            <option value="blog">blog</option>
-            <option value="linkdin">linkdin</option>
-            <option value="twitter">twitter</option>
-            <option value="facebook">facebook</option>
-
-        </select>
+          {{ form.link_type(class_='form-control')}}
         </div>
       </div>
       <button class="w-100 btn btn-outline-primary mt-3" type="submit">
         Add Skill
       </button>
     </form>
+    {% for link in links %}
+    <div class="jobs p-3 m-1 rounded" style="background-color:#ccc;">
+      {{link.url}} {{ link.link_type }}
+    </div>
+    {% endfor %}
   </div>
   <script>
      function addSkill(){

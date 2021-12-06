@@ -1,13 +1,14 @@
 import os
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, request, flash
+
+from flask import render_template, redirect, url_for, request, flash, abort
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 
 from app import app, login, db
-from app.forms import ProfileForm, JobInfoForm, CreerBackForm
-from app.models import User, Profile
+from app.forms import ProfileForm, JobInfoForm, BackgroundForm, SkillForm, ProjectsForm, LinksForm
+from app.models import Background, Skills, User, Profile, Projects, Links
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -68,7 +69,6 @@ def profile():
     form = ProfileForm()
     if form.validate_on_submit():
         age = calculate_age(form.birthday_year.data)
-        img = upload_img(form.photo.data)
         if not current_user.profile:
             # create profile for user
             profile = Profile(
@@ -78,13 +78,14 @@ def profile():
                 marital_status=form.marital_status.data,
                 user_id=current_user.id, gender=form.gender.data,
             )
-            current_user.photo = img
+            if form.photo.data:
+                current_user.photo = upload_img(form.photo.data)
             db.session.add(profile)
             db.session.commit()
             return redirect(url_for('profile'))
         else:
             # updating profile information
-            p = Profile.query.filter_by(user_id=current_user.id).first()
+            p = current_user.profile
             p.title=form.title.data
             p.phone=form.phone.data
             p.about=form.about.data
@@ -93,7 +94,8 @@ def profile():
             p.identifi_number=form.identifi_number.data
             p.marital_status=form.marital_status.data
             p.gender=form.gender.data
-            current_user.photo = img  
+            if form.photo.data:
+                current_user.photo = upload_img(form.photo.data)
             db.session.commit()
             return redirect(url_for('profile'))
     else:
@@ -139,40 +141,132 @@ def upload_img(img_file):
     return img_url
 
 
-@app.route('/profile/employment', methods=['POST', 'GET'])
+@app.route('/profile/job-info', methods=['POST', 'GET'])
 @login_required
 def job_info():
     form = JobInfoForm()
-    return render_template('resume-forms/job_info.html', title='Job Information', form=form)
+    if not current_user.profile:
+        abort(404)
+    if form.validate_on_submit():
+        p = current_user.profile   
+        p.job_status = form.job_status.data
+        p.job_type = form.job_type.data
+        p.excepted_salary = form.expected_salary.data
+        p.military_service = form.military_service.data
+        p.work_tech = form.work_tech.data
+        db.session.commit()
+        return redirect(url_for('job_info'))
+    else:
+        if current_user.profile:
+            form.job_status.data = current_user.profile.job_status
+            form.job_type.data = current_user.profile.job_type
+            form.expected_salary.data = current_user.profile.excepted_salary
+            form.military_service.data = current_user.profile.military_service
+            form.work_tech.data = current_user.profile.work_tech
+    return render_template(
+        'resume-forms/job_info.html', title='Job Information', form=form
+        )
 
 
 @app.route('/profile/background', methods=['POST', 'GET'])
 @login_required
 def career_background():
-    form = CreerBackForm()
-    return render_template('resume-forms/career_background.html', title='Career Background', form=form)
+    form = BackgroundForm()
+    if form.validate_on_submit():
+        background = Background(
+            job_title=form.job_title.data,
+            company_name=form.company_name.data,
+            employment_date=form.employment_date.data,
+            quit_date=form.quit_date.data,
+            about_job=form.about_job.data,
+            user_id=current_user.id
+        )
+        if not background.quit_date:
+            background.quit_date = 'present'
+        db.session.add(background)
+        db.session.commit()
+        return redirect(url_for('career_background'))
+    jobs = current_user.background
+    return render_template(
+        'resume-forms/background.html',title='Career Background',form=form, jobs=jobs
+    )
+
+
+@app.route('/profile/background/delete/<id>', methods=['POST', 'GET'])
+def delete_job(id):
+    job = Background.query.filter_by(id=id).first()
+    db.session.delete(job)
+    db.session.commit()
+    return redirect(url_for('career_background'))
 
 
 @app.route('/profile/skills', methods=['POST', 'GET'])
 @login_required
 def skills():
-    return render_template('resume-forms/skills.html', title='Skills')
+    form = SkillForm()
+    if form.validate_on_submit():
+        skill = Skills(
+            skill=form.skill.data,
+            level=form.level.data,
+            user_id=current_user.id
+        )
+        db.session.add(skill)
+        db.session.commit()
+    skills = current_user.skills
+    return render_template(
+        'resume-forms/skills.html', title='Skills', form=form, skills=skills
+    )
+
+
+@app.route('/profile/skills/delete/<id>', methods=['POST', 'GET'])
+def delete_skill(id):
+    skill = Skills.query.filter_by(id=id).first()
+    db.session.delete(skill)
+    db.session.commit()
+    return redirect(url_for('skills'))
 
 
 @app.route('/profile/projects', methods=['POST', 'GET'])
 @login_required
 def projects():
-    return render_template('resume-forms/projects.html', title='Projects')
+    form = ProjectsForm()
+    if form.validate_on_submit():
+        project = Projects(
+            title=form.project_title.data,
+            url=form.url.data,
+            tech=form.tech.data,
+            about=form.about.data,
+            user_id=current_user.id
+        )
+        db.session.add(project)
+        db.session.commit()
+        return redirect(url_for('projects'))
+    projects = current_user.projects
+    return render_template(
+        'resume-forms/projects.html', title='Projects', form=form, projects=projects
+    )
 
 
 @app.route('/profile/links', methods=['POST', 'GET'])
 @login_required
 def links():
-    return render_template('resume-forms/links.html', title='Links')
+    form = LinksForm()
+    if form.validate_on_submit():
+        link = Links(
+            url=form.url.data,
+            link_type=form.link_type.data,
+            user_id=current_user.id
+        )
+        db.session.add(link)
+        db.session.commit()
+        return redirect(url_for('links'))
+    links = current_user.links
+    return render_template(
+        'resume-forms/links.html', title='Links', form=form, links=links
+    )
 
 
 @app.route('/profile/resume', methods=['POST', 'GET'])
 @login_required
 def resume():
-    #resume = Resume.query.all()
     return render_template('resume.html')

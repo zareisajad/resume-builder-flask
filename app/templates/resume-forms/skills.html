@@ -4,34 +4,28 @@
 
 <div class="text-capitalize">
     <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addSkill();">Add New Skill</button>
-    <form method="post" style="display: none;" id="form">
+    <form method="post" style="display:none;" id="form">
+      {{ form.hidden_tag() }}
       <div class="row">
         <div class="col-md-6">
           <label class="mb-1" for="bookid">Skill:</label>
-          <input
-            class="form-control"
-            type="text"
-            name="bookid"
-            placeholder="Example(Django, Laravel..)"
-            required
-          />
+          {{ form.skill(class_='form-control') }}
         </div>
         <div class="col-md-6">
           <label class="mb-1" for="cardid">Level:</label>
-          <select class="form-control"  name="marital-status" required>
-            <option value="" disabled selected hidden>Select</option>
-            <option value="1year">less than 1 year</option>
-            <option value="1-2">1-2 years</option>
-            <option value="2-4">2-4 years</option>
-            <option value="4-10">4-10 years</option>
-            <option value="more-than-10">more than 10 years</option>
-        </select>
+          {{ form.level(class_='form-control') }}
         </div>
       </div>
       <button class="w-100 btn btn-outline-primary mt-3" type="submit">
         Add Skill
       </button>
     </form>
+    {% for skill in skills %}
+    <div class="jobs p-3 m-1 rounded" style="background-color:#ccc;">
+      {{ skill.skill}} ({{ skill.level }})
+      <a class="text-danger" style="float:right; font-size: 20px;" href="{{ url_for('delete_skill', id=skill.id) }}">X</a>
+    </div>
+    {% endfor %}
   </div>
   <script>
      function addSkill(){

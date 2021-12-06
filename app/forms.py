@@ -1,9 +1,8 @@
-from flask.app import Flask
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired, FileAllowed
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.simple import TextAreaField
-from wtforms.validators import DataRequired, Length, Email, ValidationError
-from wtforms import StringField, SelectField, IntegerField, BooleanField
+from wtforms.validators import DataRequired
+from wtforms import StringField, SelectField, IntegerField
 
 
 class ProfileForm(FlaskForm):
@@ -39,10 +38,6 @@ class ProfileForm(FlaskForm):
         choices = [
             ('male', 'Male'), ('female', 'Female'),
             ('not-say', 'I\'d rather not to say'), ('other', 'Other')],
-        validators=[DataRequired()]
-    )
-    gender_text = StringField(
-        render_kw={'placeholder': 'your gender'},
         validators=[DataRequired()]
     )
     about = TextAreaField(
@@ -87,7 +82,7 @@ class JobInfoForm(FlaskForm):
     )
 
 
-class CreerBackForm(FlaskForm):
+class BackgroundForm(FlaskForm):
     job_title = StringField(
         render_kw={'placeholder': 'job title'},
         validators=[DataRequired()]
@@ -102,13 +97,69 @@ class CreerBackForm(FlaskForm):
     )
     quit_date = StringField(
         render_kw={'placeholder': 'date you quit the job', 'id':'quitJob'},
-        validators=[DataRequired()]
     )
-
     about_job = TextAreaField(
         render_kw={
             'placeholder': 'Tell more about this job...',
             'cols':'30', 'rows':'5'
         },
+        validators=[DataRequired()]
+    )
+
+
+class SkillForm(FlaskForm):
+    skill = StringField(
+        render_kw={'placeholder': 'example(django, flask, etc..)'},
+        validators=[DataRequired()]
+    )
+    level = SelectField(
+        choices = [
+            ('less than 1 year', 'less than 1 year'),
+            ('1-2 years', '1-2 years'),
+            ('2-4 years', '2-4 years'),
+            ('4-10 years', '4-10 years'),
+            ('more than 10 years', 'more than 10 years'),
+        ],
+        validators=[DataRequired()]
+    )
+
+
+class ProjectsForm(FlaskForm):
+    project_title = StringField(
+        render_kw={'placeholder': 'project title'},
+        validators=[DataRequired()]
+    )
+    url = StringField(
+        render_kw={'placeholder': 'url'},
+        validators=[DataRequired()]
+    )
+    tech = StringField(
+        render_kw={'placeholder': 'example(django, flask, etc..)'},
+        validators=[DataRequired()]
+    )
+    about = TextAreaField(
+        render_kw={
+            'placeholder': 'Tell more about this project...',
+            'cols':'30', 'rows':'5'
+        },
+        validators=[DataRequired()]
+    )
+
+
+class LinksForm(FlaskForm):
+    url = StringField(
+        render_kw={'placeholder': 'url'},
+        validators=[DataRequired()]
+    )
+    link_type = SelectField(
+        choices = [
+            ('intagram', 'instagram'),
+            ('github', 'github'),
+            ('linkdin', 'linkdin'),
+            ('twitter', 'twitter'),
+            ('gitlab', 'gitlab'),
+            ('youtube', 'youtube'),
+            ('portfolio', 'portfolio'),
+        ],
         validators=[DataRequired()]
     )

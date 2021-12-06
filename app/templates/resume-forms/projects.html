@@ -2,54 +2,42 @@
 
 {% block content %}
 <div class="text-capitalize">
-  <form method="post">
+  <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addSkill();">Add New Skill</button>
+  <form method="post" style="display:none;" id="form">
+    {{ form.hidden_tag() }}
     <div class="row">
       <div class="col-md-6">
         <label class="mb-1" for="bookid">Project title:</label>
-        <input
-          class="form-control"
-          type="text"
-          name="bookid"
-          placeholder="job title"
-          required
-        />
+        {{ form.project_title(class_='form-control') }}
       </div>
       <div class="col-md-6">
         <label class="mb-1" for="cardid">URL:</label>
-        <input
-          class="form-control"
-          type="text"
-          name="cardid"
-          placeholder="company name"
-          required
-        />
+        {{ form.url(class_='form-control') }}
       </div>
       <div class="col-md-12 mt-2">
         <label class="mb-1" for="bookid">Technologys :</label>
-        <input
-          class="form-control"
-          type="text"
-          name="cardid"
-          placeholder="from"
-          required
-        />
+        {{ form.tech(class_='form-control') }}
       </div>
       <div class="col-md-12">
         <label class="mb-1 mt-2" for="cardid">Description:</label>
-        <textarea
-          class="form-control"
-          name=""
-          id=""
-          cols="30"
-          rows="5"
-          placeholder="Write a little about project..."
-        ></textarea>
+        {{ form.about(class_='form-control') }}
       </div>
     </div>
     <button class="w-100 btn btn-outline-primary mt-3" type="submit">
       Add
     </button>
   </form>
+  {% for project in projects %}
+  <div class="jobs p-3 m-1 rounded" style="background-color:#ccc;">
+    {{project.title}} {{ project.url }}
+  </div>
+  {% endfor %}
 </div>
+<script>
+  function addSkill(){
+      document.querySelector('#form').style.display = 'block';
+      document.querySelector('#showFormBtn').style.display = 'none';
+   }
+</script>
 
 {% endblock %}
