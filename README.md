@@ -1,6 +1,9 @@
 # Flask Resume Builder
 ![Screenshot 2021-12-07 at 19-02-35 Flask Resume Builder-min](https://user-images.githubusercontent.com/71011395/145061360-6f62877e-b849-434a-a3c2-0bf7be21552b.png)
 
+## About this app:
+this is a really simple but also usefull.
+
 ## Used In This App:
 - python3.8
 - flask frameword
@@ -18,4 +21,5 @@
 - now you can run the sever using: flask run
 - finally enter this url in your browser: http://127.0.0.1:5000
 
-## Output Resume file sample:
+## App preview:
+![Peek 2021-12-07 19-46](https://user-images.githubusercontent.com/71011395/145066672-4e698efd-1725-4700-88d2-0e4eb4ea7f5a.gif)
