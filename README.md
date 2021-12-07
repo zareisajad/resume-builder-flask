@@ -1,8 +1,8 @@
 # Flask Resume Builder
 ![Screenshot 2021-12-07 at 19-02-35 Flask Resume Builder-min](https://user-images.githubusercontent.com/71011395/145061360-6f62877e-b849-434a-a3c2-0bf7be21552b.png)
 
-## About this app:
-this is a really simple but also usefull.
+This is a really simple program but at the same time complete and usable. The user can register and enter the information needed to complete the resume after logging in to the account. At each step, after making any changes, the resume file changes and is visible. Finally, the user can download the PDF version of the resume.
+- click [here](#app-preview) to view preview.
 
 ## Used In This App:
 - python3.8
