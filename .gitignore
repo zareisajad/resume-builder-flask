@@ -5,7 +5,6 @@ __pycache__/
 
 app.db
 .flaskenv
-app/static/images
 
 # C extensions
 *.so

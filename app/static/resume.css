@@ -3,11 +3,32 @@
     font-family:'Raleway', sans-serif;
 }
 .resume-photo {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
+    border-radius: 90%;
 }
 
-@page { size: A4; margin: 1cm }
-@media print {
-    
+@page { size: A4; }
+@media print {}
+
+.info {
+    display: flex;
+  }
+.personal {
+    width: 300px;
+}
+.other {
+    flex: 1;
+}
+
+a , a::hove{
+    text-decoration: none;
+    color: rgb(0, 119, 255);
+    font-family: sans-serif;
+    font-size: 12px;
+    font-style: normal;
+}
+
+.bg {
+    background-color:rgba(204, 204, 204, 0.486);
 }

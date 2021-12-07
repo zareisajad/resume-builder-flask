@@ -17,17 +17,18 @@
     <title>FlaskResume|SignUp</title>
   </head>
   <body>
-    <main class="container">
-      <!-- flash messages -->
-      {% if messages %} {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-      {% endfor %} {% endif %}
-      <div class="row mt- text-capitalize">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <form method="post" class="mt-3 pt-5">
-            <div class="form-group">
-              <h3>Create your account first</h3>
+    <div class="row mt- text-capitalize">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <form method="post" class="mt-3 pt-5">
+          <main class="container">
+            <h3>Create your account first</h3>
+            {% for message in get_flashed_messages() %}
+              <div class="alert alert-danger">
+                  {{ message }}
+              </div>
+            {% endfor %}
+          <div class="form-group">
               <div class="mt-3">
                 <label class="mb-1" for="email">Email:</label>
                 <input

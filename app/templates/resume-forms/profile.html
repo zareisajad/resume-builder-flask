@@ -11,7 +11,7 @@
             {{ form.photo(class_='form-control')}}
         </div>
         <div class="col-md-2">
-            <img src="{{ url_for('static', filename=current_user.photo)}}">
+            <img class="rounded-3" src="{{ url_for('static', filename=current_user.photo)}}">
         </div>
         <div class="col-md-6">
             <label class="mb-1 mt-2" for="phone">Phone:</label>

@@ -7,38 +7,132 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='resume.css') }}">
-    <title>{{ current_user.fname }}{{ current_user.lname }}|Resume</title>
+    <title>{{ current_user.fname }}{{ current_user.lname }}</title>
 </head>
-<style>
-
-</style>
 <body>
-    <main class="container">
-        <div class="row mt-5 mb-5 text-capitalize">
-            <div class="col-md-3">
-                <div class="p-5 text-capitalize bg-primary rounded">
-                    <img class="resume-photo rounded text-center" src="{{ url_for('static', filename=current_user.photo)}}">
-                    <hr>
-                    <div class="text-light">
-                        <h5>Personal Info:</h5>
-                        <b>Age:</b> {{current_user.profile.age}} <br>
-                        <b>Located City:</b> {{current_user.profile.city}}
-                        <b>Marital status:</b> {{current_user.profile.marital_status}}<br>
-                        <b>gender:</b> {{current_user.profile.gender}}<br>
-                    </div> 
-                </div>
-            </div>
-            <!-- right side -->
-            <div class="col-md-9">
-                <h1 class="text-black">{{ current_user.fname }} {{ current_user.lname }}</h1> 
-                <h4 class="text-primary">{{ current_user.profile.title }}</h4> 
-            <hr class="text-muted">
-            <div class="about bg-light p-3">
-                <h4 class="text-muted">About Me:</h4>
-                {{ current_user.profile.about }}
-            </div>
-          </div>
+    <div class="text-capitalize">
+        <div class="mb-3" style="text-align: center;">
+            <img class="resume-photo" src="{{ image_path }}" alt="">
         </div>
-    </main>
+        <div>
+            <h1>{{ current_user.fname }} {{ current_user.lname }}</h1>
+            <h3 class="text-primary">{{ current_user.profile.title }}</h3> 
+        </div>
+        <hr>
+        <div>
+            <h5 class="text-muted">About Me:</h5>
+            {{ current_user.profile.about }}
+        </div>
+        <hr>
+        <div class="info">
+            <div class="personal">
+                <h5 class="text-muted">Personal Info:</h5>
+                <b>Age:</b> {{current_user.profile.age}} <br>
+                <b>gender:</b> {{current_user.profile.gender}}<br>
+                <b>Marital status:</b> {{current_user.profile.marital_status}}<br>
+                <b>Located City:</b> {{current_user.profile.city}} <br>
+            </div>
+            <div class="other">
+                <h5 class="text-muted">Other:</h5>
+                <b>i am currently:</b> {{current_user.profile.job_status}}<br>
+                <b>I like to work:</b> {{current_user.profile.job_type}}<br>
+                <b>marital status:</b> {{current_user.profile.military_service}} <br>
+                <b>excepted salary:</b> ${{current_user.profile.excepted_salary}}<br>
+            </div>
+        </div>
+        <hr>
+        <div class="skills">
+            <div class="">
+                <h5 class="text-muted">Skills:</h5>
+                {% for skill in current_user.skills %}
+                <div class="p-2 mt-1 rounded bg">
+                    {{ skill.skill}} ({{ skill.level }})
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <div class="experience">
+            <div class="">
+                <h5 class="text-muted">experience:</h5>
+                {% for job in current_user.background %}
+                <div class="p-2 mt-2 rounded bg">
+                    <p>
+                        {{ job.job_title }} ({{ job.employment_date }}-{{ job.quit_date }}) | at: {{ job.company_name }}
+                    </p>
+                    Description:
+                    <p class="p-1">{{ job.about_job }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <div class="projects">
+            <div class="">
+                <h5 class="text-muted">projects:</h5>
+                {% for project in current_user.projects %}
+                <div class="p-2 mt-2 rounded bg">
+                    <p>
+                        {{ project.title }} | <a href="{{ project.url }}">watch it</a>  
+                    </p>
+                    Description:
+                    <p class="p-1">{{ project.about }}</p>
+                    Technologys:
+                    <p class="p-1">{{ project.tech }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <div class="links">
+            <div class="text-center">
+                <h5 class="text-muted">Get in touch</h5>
+                {% for link in current_user.links %}
+                    <!-- instagram -->
+                    {% if link.link_type == 'instagram' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/instagram-new.png"/> 
+                    </a>
+                    {% endif %}
+                    <!-- youtube -->
+                    {% if link.link_type == 'youtube' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/youtube-play.png"/>
+                    </a>
+                    {% endif %}
+                    <!-- linkedin -->
+                    {% if link.link_type == 'linkedin' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/linkedin--v1.png"/>
+                    </a>
+                    {% endif %}
+                    <!-- twitter -->
+                    {% if link.link_type == 'twitter' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/ios-glyphs/24/000000/twitter.png"/>
+                    </a>
+                    {% endif %}
+                    <!-- github -->
+                    {% if link.link_type == 'github' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/github.png"/>
+                    </a>
+                    {% endif %}   
+                    <!-- website -->
+                    {% if link.link_type == 'portfolio' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/material-outlined/30/000000/domain.png"/>
+                    </a>
+                    {% endif %}   
+                    <!-- gitlab -->
+                    {% if link.link_type == 'gitlab' %}
+                    <a href="{{ link.url }}">
+                        <img src="https://img.icons8.com/ios/24/000000/gitlab.png"/>
+                    </a>
+                    {% endif %}   
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

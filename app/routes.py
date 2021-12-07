@@ -1,13 +1,18 @@
 import os
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, request, flash, abort
+from flask import (
+    render_template, redirect, url_for, request, flash, abort, send_file
+    )
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 from flask_weasyprint import HTML, render_pdf
 
+from config import basedir
 from app import app, login, db
-from app.forms import ProfileForm, JobInfoForm, BackgroundForm, SkillForm, ProjectsForm, LinksForm
+from app.forms import (
+    ProfileForm, JobInfoForm, BackgroundForm, SkillForm, ProjectsForm, LinksForm
+    )
 from app.models import Background, Skills, User, Profile, Projects, Links
 
 
@@ -27,7 +32,8 @@ def sign_up():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         user = User.query.filter_by(email=email).first()
-        if user and password1 != password2:
+        if user or password1 != password2:
+            flash('email or password is invalid! please try again')
             return redirect(url_for('sign_up'))
         user = User(fname=fname, lname=lname, email=email)
         user.set_password(password1)
@@ -46,6 +52,7 @@ def sign_in():
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
         if not user or not user.check_password(password):
+            flash('email or password is invalid! please try again')
             return redirect(url_for('sign_in'))
         login_user(user)
         return redirect(url_for('profile'))
@@ -82,6 +89,10 @@ def profile():
                 current_user.photo = upload_img(form.photo.data)
             db.session.add(profile)
             db.session.commit()
+            flash(
+                'Your profile created successfuly! keep working on your resume...',
+                 category='success'
+            )
             return redirect(url_for('profile'))
         else:
             # updating profile information
@@ -97,6 +108,7 @@ def profile():
             if form.photo.data:
                 current_user.photo = upload_img(form.photo.data)
             db.session.commit()
+            flash('Changes saved!', category='success')
             return redirect(url_for('profile'))
     else:
         if current_user.profile:        
@@ -155,6 +167,7 @@ def job_info():
         p.military_service = form.military_service.data
         p.work_tech = form.work_tech.data
         db.session.commit()
+        flash('Changes saved!', category='success')
         return redirect(url_for('job_info'))
     else:
         if current_user.profile:
@@ -185,6 +198,7 @@ def career_background():
             background.quit_date = 'present'
         db.session.add(background)
         db.session.commit()
+        flash('job experience added!', category='success')
         return redirect(url_for('career_background'))
     jobs = current_user.background
     return render_template(
@@ -197,6 +211,7 @@ def delete_job(id):
     job = Background.query.filter_by(id=id).first()
     db.session.delete(job)
     db.session.commit()
+    flash('job experience deleted!', category='success')
     return redirect(url_for('career_background'))
 
 
@@ -212,6 +227,8 @@ def skills():
         )
         db.session.add(skill)
         db.session.commit()
+        return redirect(url_for('skills'))
+        flash('new skill added!', category='success')
     skills = current_user.skills
     return render_template(
         'resume-forms/skills.html', title='Skills', form=form, skills=skills
@@ -223,6 +240,7 @@ def delete_skill(id):
     skill = Skills.query.filter_by(id=id).first()
     db.session.delete(skill)
     db.session.commit()
+    flash('skill deleted!', category='success')
     return redirect(url_for('skills'))
 
 
@@ -240,11 +258,21 @@ def projects():
         )
         db.session.add(project)
         db.session.commit()
+        flash('project added!', category='success')
         return redirect(url_for('projects'))
     projects = current_user.projects
     return render_template(
         'resume-forms/projects.html', title='Projects', form=form, projects=projects
     )
+
+
+@app.route('/profile/projects/delete/<id>', methods=['POST', 'GET'])
+def delete_project(id):
+    project = Projects.query.filter_by(id=id).first()
+    db.session.delete(project)
+    db.session.commit()
+    flash('project deleted!', category='success')
+    return redirect(url_for('projects'))
 
 
 @app.route('/profile/links', methods=['POST', 'GET'])
@@ -259,6 +287,7 @@ def links():
         )
         db.session.add(link)
         db.session.commit()
+        flash('link added!', category='success')
         return redirect(url_for('links'))
     links = current_user.links
     return render_template(
@@ -266,9 +295,43 @@ def links():
     )
 
 
+@app.route('/profile/links/delete/<id>', methods=['POST', 'GET'])
+def delete_link(id):
+    link = Links.query.filter_by(id=id).first()
+    db.session.delete(link)
+    db.session.commit()
+    flash('link deleted!', category='success')
+    return redirect(url_for('links'))
+
+
+def image_path():
+    # since weasyprint does not render image in 
+    # {{url_for(static, filename=current_user.photo )}} format
+    # we have to pass full path with image name
+    img_name, img_extension = os.path.splitext(current_user.photo)# get image name and extension
+    # mix it all together. example output:
+    # file:///home/<pc-user>/code/resume-builder-flask/app/static/images/sajad1.jpg
+    image_path = 'file://' + os.path.join(basedir, 'app', 'static') + img_name + img_extension
+    return image_path
+
+
 @app.route('/profile/resume', methods=['POST', 'GET'])
 @login_required
 def resume():
-    html = render_template('resume.html')
+    # check if user have resume file in system then remove it
+    file_name = 'app/static/resume/' + str(current_user.fname) + '_resume.pdf'
+    if os.path.isfile(file_name):
+        os.remove(file_name)
+    html = render_template('resume.html', image_path=image_path())
     return render_pdf(HTML(string=html))
-    # return render_template('resume.html')
+
+
+@app.route('/profile/download/resume', methods=['POST', 'GET'])
+@login_required
+def download_resume():
+    html = render_template('resume.html', image_path=image_path())
+    resume_name = 'app/static/resume/' + str(current_user.fname)+'_resume.pdf'
+    pdf = HTML(string=html).write_pdf(resume_name)
+    return send_file(
+        'static/resume/'+ str(current_user.fname)+'_resume.pdf', as_attachment=True
+    )

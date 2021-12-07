@@ -52,9 +52,9 @@ class ProfileForm(FlaskForm):
 class JobInfoForm(FlaskForm):
     job_status = SelectField(
         choices = [
-            ('active', 'in active search'),
-            ('interested', 'interested in a new job'),
-            ('not-looking', 'not looking for a job')
+            ('in active search', 'in active search'),
+            ('interested in a new job', 'interested in a new job'),
+            ('not looking for a job', 'not looking for a job')
         ],
         validators=[DataRequired()]
     )

@@ -14,6 +14,11 @@
         <div class="row mt-5 mb-5 text-capitalize">
             <div class="col-md-3 ms-5 p-1">
                 <div class="text-primary text-capitalize">
+                  <a href="{{ url_for('logout') }}">
+                    <li class="btn btn-danger">
+                      logout
+                    </li>
+                  </a>
                   <a href="{{ url_for('profile') }}">
                     <li class="list-group-item rounded text-primary">
                       Personal Info
@@ -51,7 +56,7 @@
                     </li>
                   </a>
                   <div class="text-center">
-                    <a class="btn btn-outline-primary  ms-1 ps-2" href="">Download
+                    <a class="btn btn-outline-primary  ms-1 ps-2" href="{{ url_for('download_resume') }}">Download
                         <i style="vertical-align: middle;" class="material-icons">&#xe2c4;</i>
                     </a>
                     <a class="btn btn-primary m-1 ps-2" href="{{ url_for('resume') }}" target='_blank'>Resume
@@ -68,13 +73,11 @@
                 <h3 class="text-primary"><i class="material-icons h2 text-primary" style="vertical-align: middle;">&#xe24d;</i> {% if title %} {{title}} {% else %}Flask Resume Builder{% endif %} </h3> 
             <hr class="text-muted">
             <!-- flash messages -->
-            {% if messages %}
-              {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}}" role="banner">{{ message }}</div>
+            {% endfor %}
+            {% endwith %}
             {% block content %}{% endblock %}
           </div>
         </div>

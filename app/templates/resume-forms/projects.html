@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="text-capitalize">
-  <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addSkill();">Add New Skill</button>
+  <button id="showFormBtn" class="btn btn-primary w-100 mb-3" onclick="addSkill();">Add New project</button>
   <form method="post" style="display:none;" id="form">
     {{ form.hidden_tag() }}
     <div class="row">
@@ -30,6 +30,7 @@
   {% for project in projects %}
   <div class="jobs p-3 m-1 rounded" style="background-color:#ccc;">
     {{project.title}} {{ project.url }}
+    <a class="text-danger" style="float:right; font-size: 20px;" href="{{ url_for('delete_project', id=project.id) }}">X</a>
   </div>
   {% endfor %}
 </div>
