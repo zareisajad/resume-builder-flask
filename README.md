@@ -3,7 +3,7 @@
 
 This is a really simple program but at the same time complete and usable. The user can register and enter the information needed to complete the resume after logging in to the account. At each step, after making any changes, the resume file changes and is visible. Finally, the user can download the PDF version of the resume.
 - output resume file: [sajad_resume.pdf](https://github.com/zareisajad/resume-builder-flask/files/7670058/sajad_resume.pdf)
-- click [here](#app-preview) to view preview.
+- click [here](#app-preview) to watch app preview.
 
 ## Used In This App:
 - python3.8
