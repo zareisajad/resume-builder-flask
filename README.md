@@ -13,13 +13,13 @@ This is a really simple program but at the same time complete and usable. The us
 - [Flask-WeasyPrint](https://pythonhosted.org/Flask-WeasyPrint/) >> to render pdf file
 
 ## How To Run it:
-- install python3, pip3, python3-venv in your machine.
+- install ```python3```, ```pip3```, ```python3-venv``` in your machine.
 - clone or download the project
-- cd to the app directory then create a virtualenv named venv using python3 -m venv venv
-- connect to virtualenv using source venv/bin/activate . (it's different on windows).
-- then install packages using pip install -r requirements.txt
-- next run this command: flask db upgrade
-- now you can run the sever using: flask run
+- cd to the app directory then create a virtualenv named ```venv``` using ```python3 -m venv venv```
+- connect to virtualenv using ```source venv/bin/activate``` (it's different on windows os).
+- then install packages using ```pip install -r requirements.txt```
+- next run this command: ```flask db upgrade```
+- now you can run the sever using: ```flask run```
 - finally enter this url in your browser: http://127.0.0.1:5000
 
 ## App preview:
