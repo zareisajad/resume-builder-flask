@@ -7,7 +7,7 @@ This is a really simple program but at the same time complete and usable. The us
 
 ## Used In This App:
 - python3.8
-- flask frameword
+- flask framework
 - Bootstrap5
 - SQLite database
 - [Flask-WeasyPrint](https://pythonhosted.org/Flask-WeasyPrint/) >> to render pdf file
